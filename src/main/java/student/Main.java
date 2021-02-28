@@ -166,12 +166,9 @@ public class Main {
      * @return True, if no critical file has been modified
      */
     private static boolean hasBeenTamperedWith() {
-        String[] files =  {"./build.gradle",
-                "./src/main/java/ias/Deck.java",
-                "./src/main/java/ias/Factory.java",
-                "./src/main/java/ias/Game.java",
-                "./src/main/java/ias/GameException.java",
-                "./src/test/java/ias/TestUtil.java"};
+        String[] files =  {"./build.gradle", "./src/main/java/ias/Deck.java", "./src/main/java/ias/Factory.java",
+                           "./src/main/java/ias/Game.java", "./src/main/java/ias/GameException.java",
+                           "./src/test/java/ias/TestUtil.java"};
 
         long result = 0;
         for (String file : files) {
