@@ -1,13 +1,24 @@
 package student;
 
 import java.util.ArrayList;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import ias.GameException;
+import ias.Deck;
 
 public class MyGame implements Game{
     public ArrayList<Card> cards = new ArrayList<Card>();
     public ArrayList<String[]> properties = new ArrayList<String[]>();
     public ArrayList<String[]> rulesInt = new ArrayList<String[]>();
     public ArrayList<String[]> rulesString = new ArrayList<String[]>();
-
+    public String game_name;
+    
+    public MyGame(String name) {
+        this.game_name = name;
+    }
+    
     @Override
     public void defineCard(String name) throws GameException {
         cards.add(new Card(name));
@@ -48,38 +59,92 @@ public class MyGame implements Game{
             // do whatever to do for game
         }
         else if(type.equals("card")) {
-            for(Card c : cards) {
-                if(c.name == name){
-                    return new String[]{name};
+            if(name != "*") {
+                for (Card c : cards) {
+                    if (c.name == name) {
+                        return new String[]{name};
+                    }
                 }
+                return new String[0];
             }
-            return new String[0];
+            return cards.toArray(new String[0]);
         }
         else if(type.equals("property")) {
-            for(String[] property : properties) {
-                if(property[0] == name) {
-                    return new String[]{name};
+            if(name != "*") {
+                for (String[] property : properties) {
+                    if (property[0] == name) {
+                        return new String[]{name};
+                    }
                 }
+                return new String[0];
             }
-            return new String[0];
+            return properties.toArray(new String[0]);
         }
         else if(type.equals("rule")) {
-            for(String[] rule : rulesInt){
-                if(rule[0] == name) {
-                    return new String[]{name};
+            if (name != "*") {
+                for (String[] rule : rulesInt) {
+                    if (rule[0] == name) {
+                        return new String[]{name};
+                    }
                 }
-            }
-            for(String[] rule : rulesString){
-                if(rule[0] == name) {
-                    return new String[]{name};
+                for (String[] rule : rulesString) {
+                    if (rule[0] == name) {
+                        return new String[]{name};
+                    }
                 }
+                return new String[0];
             }
-            return new String[0];
+
+            String[] output_array = new String[rulesInt.size() + rulesString.size()];
+            for(int i = 0; i < rulesInt.size(); i++) {
+                output_array[i] = rulesInt.get(i)[0] + rulesInt.get(i)[1];
+            }
+            for(int j = 0; j < rulesString.size(); j++) {
+                output_array[j + rulesInt.size()] = rulesString.get(j)[0] + ":" + rulesString.get(j)[1] + ">" + rulesString.get(j)[2];
+            }
+            return output_array;
         }
+        return new String[0];
     }
 
     @Override
     public void saveToFile(String path) throws GameException {
+        try {
+            File myFile = new File(path);
+            myFile.createNewFile();
+        } catch (IOException e) {
+        }
+
+        try {
+            FileWriter myWriter = new FileWriter(path);
+            myWriter.write("Game: " + game_name + "\n");
+
+            for (Card card : cards) {
+                myWriter.write("Card: " + card.name + "\n");
+            }
+
+            for (String[] property : properties) {
+                myWriter.write("Property: " + property[0] + " | " + property[1] + "\n");
+            }
+
+            for (Card card : cards) {
+                ArrayList<String[]> card_properties = card.properties;
+                for (String[] card_property : card_properties) {
+                    myWriter.write("CardProperty: " + card_property[0] + " | " + card_property[1] + " | " + card_property[2] + "\n");
+                }
+            }
+
+            for (String[] rule : rulesInt) {
+                myWriter.write("GameRuleInteger: " + rule[0] + " | " + rule[1] + "\n");
+            }
+
+            for (String[] rule : rulesString) {
+                myWriter.write("GameRuleString: " + rule[0] + " | " + rule[1] + " | " + rule[2] + "\n");
+            }
+
+        } catch (IOException e) {
+        }
+
 
     }
 
