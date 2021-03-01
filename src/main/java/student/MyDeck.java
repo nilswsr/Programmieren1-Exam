@@ -174,6 +174,10 @@ public class MyDeck implements Deck {
                             }
                         }
                     }
+                } else if (propValueOpponent != null) {
+                    currentCardLosses++;
+                } else if (propValueMyself != null) {
+                    currentCardWins++;
                 }
 
 
