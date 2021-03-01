@@ -15,24 +15,24 @@ import ias.Game;
  *
  */
 public class MyGame implements Game {
-    private ArrayList<Card> cards = new ArrayList<>();
-    private ArrayList<String[]> properties = new ArrayList<>();
-    private ArrayList<String[]> rulesInt = new ArrayList<>();
-    private ArrayList<String[]> rulesString = new ArrayList<>();
-    private ArrayList<String> cardNames = new ArrayList<>();
-    private ArrayList<String> propertyNames = new ArrayList<>();
-    private String gameName;
+    private final ArrayList<Card> cards = new ArrayList<>();
+    private final ArrayList<String[]> properties = new ArrayList<>();
+    private final ArrayList<String[]> rulesInt = new ArrayList<>();
+    private final ArrayList<String[]> rulesString = new ArrayList<>();
+    private final ArrayList<String> cardNames = new ArrayList<>();
+    private final ArrayList<String> propertyNames = new ArrayList<>();
+    private final String gameName;
 
     /**
-     * @param name
+     * @param name Name
      */
     public MyGame(String name) {
         this.gameName = name;
     }
 
     /**
-     * @param name
-     * @throws GameException
+     * @param name Name
+     * @throws GameException Already Defined
      */
     @Override
     public void defineCard(String name) throws GameException {
@@ -46,9 +46,9 @@ public class MyGame implements Game {
     }
 
     /**
-     * @param name
-     * @param type
-     * @throws GameException
+     * @param name Name
+     * @param type int or str
+     * @throws GameException already defined or wrong input
      */
     @Override
     public void defineProperty(String name, String type) throws GameException {
@@ -65,10 +65,10 @@ public class MyGame implements Game {
     }
 
     /**
-     * @param cardName
-     * @param propertyName
-     * @param value
-     * @throws GameException
+     * @param cardName     Name
+     * @param propertyName propName
+     * @param value        New val
+     * @throws GameException wrong datatype
      */
     @Override
     public void setProperty(String cardName, String propertyName, String value) throws GameException {
@@ -89,16 +89,16 @@ public class MyGame implements Game {
                     }
                 }
 
-                c.getProperties().add(new String[]{propertyName, value});
+                c.addProperty(new String[]{propertyName, value});
             }
         }
     }
 
     /**
-     * @param cardName
-     * @param propertyName
-     * @param value
-     * @throws GameException
+     * @param cardName     cardname
+     * @param propertyName propname
+     * @param value        propvalue
+     * @throws GameException wrong datatype
      */
     @Override
     public void setProperty(String cardName, String propertyName, int value) throws GameException {
@@ -118,15 +118,15 @@ public class MyGame implements Game {
                                 + "this combination of card name and property");
                     }
                 }
-                c.getProperties().add(new String[]{propertyName, Integer.toString(value)});
+                c.addProperty(new String[]{propertyName, Integer.toString(value)});
             }
         }
     }
 
     /**
-     * @param propertyName
-     * @param operation
-     * @throws GameException
+     * @param propertyName porpbame
+     * @param operation op
+     * @throws GameException wrong datatype
      */
     @Override
     public void defineRule(String propertyName, String operation) throws GameException {
@@ -152,10 +152,10 @@ public class MyGame implements Game {
     }
 
     /**
-     * @param propertyName
-     * @param winningName
-     * @param losingName
-     * @throws GameException
+     * @param propertyName propname
+     * @param winningName  winname
+     * @param losingName   loosingname
+     * @throws GameException hits itself
      */
     @Override
     public void defineRule(String propertyName, String winningName, String losingName) throws GameException {
@@ -181,10 +181,10 @@ public class MyGame implements Game {
     }
 
     /**
-     * @param type
-     * @param name
-     * @return
-     * @throws GameException
+     * @param type type
+     * @param name name
+     * @return returns get value
+     * @throws GameException sth wrong
      */
     @Override
     public String[] get(String type, String name) throws GameException {
@@ -243,16 +243,16 @@ public class MyGame implements Game {
     }
 
     /**
-     * @param path
-     * @throws GameException
+     * @param path file path
+     * @throws GameException no file
      */
     @Override
     public void saveToFile(String path) throws GameException {
-
         try {
             File myFile = new File(path);
             myFile.createNewFile();
         } catch (IOException e) {
+            throw new GameException("Path not correct");
         }
 
         try {
@@ -292,9 +292,9 @@ public class MyGame implements Game {
     }
 
     /**
-     * @param path
+     * @param path file path
      * @return mygame
-     * @throws GameException
+     * @throws GameException wrong input
      */
     public static MyGame loadGame(String path) throws GameException {
         MyGame game;
@@ -379,11 +379,32 @@ public class MyGame implements Game {
 
 
     /**
-     *
      * @return cards
      */
     public ArrayList<Card> getCards() {
         return cards;
+    }
+
+
+    /**
+     * @return rulesInt
+     */
+    public ArrayList<String[]> getRulesInt() {
+        return rulesInt;
+    }
+
+    /**
+     * @return rulesString
+     */
+    public ArrayList<String[]> getRulesString() {
+        return rulesString;
+    }
+
+    /**
+     * @return properties
+     */
+    public ArrayList<String[]> getProperties() {
+        return properties;
     }
 
     /**
@@ -391,6 +412,6 @@ public class MyGame implements Game {
      */
     @Override
     public Deck createDeck() {
-        return new MyDeck();
+        return new MyDeck(this);
     }
 }
