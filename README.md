@@ -1,7 +1,7 @@
-# Programmieren1 Klausur
-In der Klausur des Kurses "Programmieren 1" der TU Braunschweig ging es um die Anwendung der erlernten Fähigkeiten aus dem Kurs.
+# Programmieren1 Exam
+The exam of the course "Programmieren 1" by the TU Braunschweig was about applying the abilities learned in the course.
 
-## Was ich gelernt habe
-- Zusammenhang zwischen Klassen und Interfaces
-- Testen von Java-Programmen mit "JUnit"
-- Anwendung von Checkstyle-Regeln
+## What I have learned
+- Correlation between Classes and Interfaces
+- Testing Java-Applications with "JUnit"
+- Applying Checkstyle-Rules
